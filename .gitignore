@@ -1,3 +1,4 @@
 #file to prevent syncing of system files into git repo
 __pycache__/
 .vscode/
+audit.log
