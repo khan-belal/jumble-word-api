@@ -18,29 +18,125 @@
 
 This project can be deployed locally or in a containerized workflow depending on the user's preference. Instructions for both deployments are located in the installation section.
 
+### Assumptions
+- Users will be familiar with the process to deploy a local kubernetes cluster and how to deploy resources on cluster
+
+- All requests to api will be recorded in audit log (including request to get audit log)
+
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+This project requires the software below as a prerequisite. It has been split into two sections depending on the type of deployment
+
+Containerized deployment
+* docker desktop (required only if deploying k8s cluster using kind)
   ```sh
-  npm install npm@latest -g
+  choco install docker-desktop (windows through chocolatey)
+  brew install docker (mac os through homebrew)
+  ```
+* kubernetes cli (kubectl)
+  ```sh
+  choco install kubernetes-cli (windows through chocolatey)
+  brew install kubernetes-cli (mac os thorugh homebrew)
+  ```
+
+* helm (optional)
+  ```sh
+  choco install kubernetes-helm (windows through chocolatey)
+  brew install helm (mac os through homebrew)
+  ```
+
+* kubernetes cluster (local)
+* kind (requires docker desktop)
+  ```sh
+  choco install kind (windows through chocolatey)
+  brew install kind (mac os though chocolatey)
+  ```
+or
+
+* minikube
+  ```sh
+  choco install minikube (windows through chocolatey)
+  brew install minikube (mac os through homebrew)
+  ```
+
+Local Deployment
+* Python3
+  ```sh
+  choco install python (windows through chocolatey)
+  brew install python@3.9 (macos through homebrew)
+  ```
+
+* FastAPI (requires python)
+  ```sh
+  pip install fastapi
+  ```
+* Uvicorn (requires python)
+  ```sh
+  pip install "uvicorn[standard]"
   ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+Containerized deployment
+1. Clone or Download the code from the repository
+  ```sh
+  git clone https://github.com/khan-belal/jumble-word-api.git
+  ```
+
+2. Deploy a local kubernetes cluster.
+
+  If using kind use the included config file to ensure networking ports are exposed for connectivity
+
+  ```sh
+  kind create cluster --name my-cluster --config=kind-config.yaml
+  ```
+  If using minikube, start the kubernetes cluster.
+  ```sh
+  minkube start
+  ```
+
+3. Check status of cluster and confirm kubectl has been setup correctly
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   kubectl get nodes
    ```
-3. Install NPM packages
+
+4. Create namespace for application
+  ```sh
+  kubectl create namespace jumble-word
+  ```
+
+5. Deploy the application
+
+  If using helm,
+
    ```sh
-   npm install
+   helm install --namespace jumble-word jumble-word-api
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+
+   Otherwise, kubectl can be used to deploy the app directly
+   ```sh
+   kubectl apply -f -namespace jumble-word api-deployment.yaml
    ```
+
+Local Deployment
+1. Ensure python is installed
+
+    ```sh
+    python3 --version
+    ```
+
+2. Install required packages for FastAPI/Uvicorn
+
+  ```sh
+  pip install fastapi
+  pip install "uvicorn[standard]"
+  ```
+
+3. Start the uvicorn server
+
+  ```sh
+  uvicorn main:app
+  ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -49,26 +145,37 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+The api enables 2 functionalities with usage examples for each function below:
 
+jumble-word
+The main function of the api is to jumble words that are supplied to the api. 
+
+To request a jumbled word from the api, first locate the ip address of the pod/instance running the api.
+
+If running on the local machine, the address for the api will be 
+
+http://localhost:8000
+
+If running on a local kubernetes cluster, obtain the ip address of the running node. This is especially important if running the cluster in WSL2 on Windows.
+
+```sh
+minikube ip
+```
+
+If using kind obtain the ip address of the linux instance running in WSL2 (windows only)
+ 
+```sh
+ifconfig eth0
+```
+
+Once the ip address of the api is located, the api can be queried using the examples below:
+
+Jumble-word
+  ```sh
+  http://localhost:8000/jumble-word
 _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTRIBUTING -->
@@ -84,37 +191,6 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
