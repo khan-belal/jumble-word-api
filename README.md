@@ -75,6 +75,30 @@ Local Deployment
   pip install "uvicorn[standard]"
   ```
 
+### Building/Updating Docker Image
+1. Clone or Download the code from the repository
+  ```sh
+  git clone https://github.com/khan-belal/jumble-word-api.git
+  ```
+    or 
+  
+  Pull image from docker hub
+  ```sh
+  docker pull belalkhan/jumble-word-api:latest
+  ```
+
+2. Make required changes to Docker file/application file
+
+3. Build docker image
+  ```sh
+  docker build -t khan-belal/jumble-word-api .
+  ```
+
+4. Run new built image
+  ```sh
+  docker run -p 80:80 khan-belal/jumble-word-api
+  ```
+
 ### Installation
 
 Containerized deployment
