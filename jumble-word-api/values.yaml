@@ -1,0 +1,6 @@
+deployment:
+  image: belalkhan/jumble-word-api
+  replicas: 1
+
+service:
+  nodePort: 31000
