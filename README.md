@@ -85,12 +85,12 @@ Containerized deployment
 
 2. Deploy a local kubernetes cluster.
 
-  If using kind use the included config file to ensure networking ports are exposed for connectivity
+    If using kind use the included config file to ensure networking ports are exposed for connectivity
 
   ```sh
   kind create cluster --name my-cluster --config=kind-config.yaml
   ```
-  If using minikube, start the kubernetes cluster.
+    If using minikube, start the kubernetes cluster.
   ```sh
   minkube start
   ```
@@ -107,13 +107,13 @@ Containerized deployment
 
 5. Deploy the application
 
-  If using helm,
+    If using helm
 
    ```sh
    helm install --namespace jumble-word jumble-word-api
    ```
 
-   Otherwise, kubectl can be used to deploy the app directly
+    Otherwise, kubectl can be used to deploy the app directly
    ```sh
    kubectl apply -f -namespace jumble-word api-deployment.yaml
    ```
