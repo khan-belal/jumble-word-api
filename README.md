@@ -110,7 +110,7 @@ Containerized deployment
     If using helm
 
    ```sh
-   helm install --namespace jumble-word jumble-word-api
+   helm install --namespace jumble-word jumble-word-api --values ./jumble-word-api/values.yaml
    ```
 
     Otherwise, kubectl can be used to deploy the app directly
